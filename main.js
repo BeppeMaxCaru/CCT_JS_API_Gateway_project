@@ -4,6 +4,7 @@ const app = express()
 const port = 3000
 
 const path = require('path')
+const axios = require('axios')
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,6 +41,28 @@ app.post('/login', (req, res) => {
 app.get('/test', (req, res) => {
     //res.send('Test page!')
     res.sendFile(path.join(__dirname, 'Front-end/home.html'))
+})
+
+app.post('/test', async (req, res) => {
+    
+    try {
+        const stockTicker = req.body.inputString;
+        console.log(stockTicker);
+    
+        // Make a request to the Yahoo Finance API to fetch stock data
+        const response = await axios.get(`https://query1.finance.yahoo.com/v8/finance/chart/${stockTicker}`);
+    
+        // Extract the stock price from the response data
+        const stockData = response.data.chart.result[0];
+        const stockPrice = stockData.meta.regularMarketPrice;
+    
+        // Return the stock price as the response
+        res.send(`Current price of ${stockTicker}: $${stockPrice}`);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving stock price');
+      }
+
 })
 
 app.listen(port, () => {
