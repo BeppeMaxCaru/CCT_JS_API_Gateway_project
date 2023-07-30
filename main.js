@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Apply rate limiting middleware
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes (15 mins * 60 seconds * 1000 since time unit is millisec)
+  windowMs: 60 * 1000, // 1 minute (60 seconds * 1000 since time unit is millisec)
   max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
@@ -89,7 +89,7 @@ async function checkBackendServerHealth(backendServer) {
   return false; // Backend server is not healthy
 }
 
-// Periodically update the backend servers array every 10 seconds
+// Periodically update the backend servers array every 30 seconds
 setInterval(async () => {
   const updatedBackendServers = [];
   for (const backendServer of backendServers) {
