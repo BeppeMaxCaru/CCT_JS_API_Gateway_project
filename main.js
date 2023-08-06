@@ -128,14 +128,15 @@ const loginRouter = express.Router();
 
 loginRouter.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'Front-end/login page.html'));
+  //res.sendFile(path.join(__dirname, 'Front-end/welcome page.html'));
 });
 
 loginRouter.post('/', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  // Perform validation or authentication logic
-  // ...
+  //Perform validation or authentication logic?
+  //-> stick with admin + password
 
   if (username === 'admin' && password === 'password') {
     req.session.authenticated = true;
@@ -149,7 +150,6 @@ loginRouter.post('/', (req, res) => {
 app.use('/', loadBalancerRouter);
 app.use('/login', loginRouter);
 
-// Handle requests to other routes by load balancing to backend servers
 // Handle requests to other routes by load balancing to backend servers
 app.all('*', (req, res) => {
   if (req.session.authenticated) {

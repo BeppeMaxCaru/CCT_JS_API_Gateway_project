@@ -3,6 +3,8 @@ const fs = require('fs')
 const https = require('https')
 
 const app = express();
+// Start the server
+const port = 3002;
 
 // Enable CORS to allow requests from different origins (including the load balancer)
 app.use((req, res, next) => {
@@ -29,9 +31,6 @@ function startServer(port, options) {
   });
 }
 
-// Start the server
-const port = 3002;
-
 // Load the SSL/TLS certificates
 const options = {
   key: fs.readFileSync('SecurityServer2/private_key_server2.pem'),
@@ -41,12 +40,6 @@ const options = {
   //self-signed certificates for security reasons
   //By default they accept only the ones signed by official Certification Authority (CA)
 };
-
-/*
-app.listen(port, () => {
-  console.log(`Backend Server 3002 is running on port ${port}`);
-});
-*/
 
 // Start the server
 startServer(port, options);
