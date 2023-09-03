@@ -89,17 +89,16 @@ async function checkBackendServerHealth(backendServer) {
   return false; // Backend server is not healthy
 }
 
-// Periodically update the backend servers array every 30 seconds
-setInterval(async () => {
-  const updatedBackendServers = [];
+//Function to periodically monitor backend servers
+async function updateBackendServerHealth() {
   for (const backendServer of backendServers) {
     const isHealthy = await checkBackendServerHealth(backendServer);
     backendServer.healthy = isHealthy;
-    if (isHealthy) {
-      updatedBackendServers.push(backendServer);
-    }
   }
-}, 30000);
+}
+
+//Periodically update backend servers array every 30 seconds
+setInterval(updateBackendServerHealth, 30000);
 
 // Define the load balancing route for '/'
 const loadBalancerRouter = express.Router();
